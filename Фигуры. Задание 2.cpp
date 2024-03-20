@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 
-
 using namespace std;
 
 class Figure
@@ -23,10 +22,16 @@ public:
 
 };
 
+void print_info(Figure* fig)
+{
+    fig->print();
+}
+
 class Triangle : public Figure
 {
 protected:
-    double a, b, c, A, B, C;
+    double a, b, c;
+    double A, B, C;
 
 public:
 
@@ -45,10 +50,9 @@ public:
 class RightTriangle : public Triangle
 {
 public:
-    RightTriangle(double a, double b, double c, double A, double B, double C) : Triangle(a, b, c, A, B, C)
+    RightTriangle(double a, double b, double c, double A, double B) : Triangle(a, b, c, A, B, 90)
     {
-        if (C == 90)
-            name = "Прямоугольный треугольник";
+        name = "Прямоугольный треугольник";
     }
 };
 
@@ -56,22 +60,17 @@ class IsoscelesTriangle : public Triangle
 {
 
 public:
-    IsoscelesTriangle(double a, double b, double c, double A, double B, double C) : Triangle(a, b, c, A, B, C)
+    IsoscelesTriangle(double a, double b, double A, double B) : Triangle(a, b, a, A, B, A)
     {
-        if (a == c && A == C)
-
             name = "Равнобедренный треугольник";
-
     }
 };
 
-class EquilateralTriangle : public IsoscelesTriangle
+class EquilateralTriangle : public Triangle
 {
 public:
-    EquilateralTriangle(double a, double b, double c, double A, double B, double C) : IsoscelesTriangle(a, b, c, A, B, C)
+    EquilateralTriangle(double a) : Triangle(a, a, a, 60, 60, 60)
     {
-        if (a == b && A == 60 && B == 60 && C == 60)
-
             name = "Равносторонний треугольник";
     }
 };
@@ -96,46 +95,40 @@ public:
         cout << "Углы: A=" << A << " B=" << B << " C=" << C << " D=" << D << endl;
     }
 
-};
+}; 
 
-class Rectangle : public Quadrangle
+class Parallelogram : public Quadrangle
 {
 public:
-    Rectangle(double a, double b, double c, double d, double A, double B, double C, double D) : Quadrangle(a, b, c, d, A, B, C, D)
+    Parallelogram(double a, double b, double A, double B) : Quadrangle(a, b, a, b, A, B, A, B)
     {
-        if (a == c && b == d && A == C && B == D)
-            name = "Прямоугольник";
+        name = "Параллелограмм";
+    }
+};
+
+class Rectangle : public Parallelogram
+{
+public:
+    Rectangle(double a, double b) : Parallelogram(a, b, 90, 90)
+    {
+        name = "Прямоугольник";  
     }
 };
 
 class Square : public Rectangle
 {
 public:
-    Square(double a, double b, double c, double d, double A, double B, double C, double D) : Rectangle(a, b, c, d, A, B, C, D)
+    Square(double a) : Rectangle(a, a)
     {
-        if (c == b && C && B)
-            name = "Квадрат";
+        name = "Квадрат";
     }
 };
-
-class Parallelogram : public Quadrangle
-{
-public:
-    Parallelogram(double a, double b, double c, double d, double A, double B, double C, double D) : Quadrangle(a, b, c, d, A, B, C, D)
-    {
-        if (a == c && b == d && A == C && B == D)
-
-            name = "Параллелограмм";
-    }
-};
-
 class Rhomb : public Parallelogram
 {
 public:
-    Rhomb(double a, double b, double c, double d, double A, double B, double C, double D) : Parallelogram(a, b, c, d, A, B, C, D)
+    Rhomb(double a, double A, double B) : Parallelogram(a,a,A,B)
     {
-        if (a == b && b == c && c == d && A == C && B == D)
-            name = "Ромб";
+        name = "Ромб";
     }
 };
 
@@ -144,29 +137,29 @@ int main()
     Triangle triangle(10, 20, 30, 50, 60, 70);
     triangle.print();
 
-    RightTriangle right_triangle(10, 20, 30, 50, 60, 90);
-    right_triangle.print();
+    RightTriangle right_triangle(10, 20, 30, 50, 60);
+    print_info(&right_triangle);
 
-    IsoscelesTriangle isosceles_triangle(10, 20, 10, 40, 60, 40);
-    isosceles_triangle.print();
+    IsoscelesTriangle isosceles_triangle(10, 20, 50, 60);
+    print_info(&isosceles_triangle);
 
-    EquilateralTriangle equilateral_triangle(10, 10, 10, 60, 60, 60);
-    equilateral_triangle.print();
+    EquilateralTriangle equilateral_triangle(30);
+    print_info(&equilateral_triangle);
 
     Quadrangle quandrangle(10, 20, 30, 40, 50, 60, 70, 80);
-    quandrangle.print();
+    print_info(&quandrangle);
 
-    Rectangle rectangle(10, 20, 10, 20, 90, 90, 90, 90);
-    rectangle.print();
+    Rectangle rectangle(10, 20);
+    print_info(&rectangle);
 
-    Square square(10, 10, 20, 10, 90, 90, 90, 90);
-    square.print();
+    Square square(10);
+    print_info(&square);
 
-    Parallelogram parallelogram(10, 20, 10, 20, 30, 40, 30, 40);
-    parallelogram.print();
+    Parallelogram parellelogram(20,30,30,40);
+    print_info(&parellelogram);
 
-    Rhomb rhomb(30, 30, 30, 30, 30, 40, 30, 40);
-    rhomb.print();
+    Rhomb rhomb(30, 30, 40);
+    print_info(&rhomb);
 
     return 0;
 }
